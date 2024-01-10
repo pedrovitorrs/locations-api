@@ -11,6 +11,7 @@ import {
   Res,
   NotFoundException,
   Query,
+  ConflictException,
 } from "@nestjs/common";
 import { Response } from "express";
 import { LocationsService } from './locations.service';
@@ -27,8 +28,13 @@ export class LocationsController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createLocationDto: CreateLocationDto) {
-    return this.locationsService.create(createLocationDto);
+  async create(@Body() createLocationDto: CreateLocationDto) {
+    const location = await this.locationsService.findByName(createLocationDto.name?.toLowerCase());
+    console.log(location)
+    if(location){
+      throw new ConflictException();
+    }
+    return await this.locationsService.create(createLocationDto);
   }
 
   @UseGuards(AuthGuard)

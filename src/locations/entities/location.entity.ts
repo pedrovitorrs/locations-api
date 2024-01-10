@@ -5,6 +5,8 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
+    BeforeInsert, 
+    BeforeUpdate
   } from "typeorm";
 
 @Entity("location")
@@ -32,4 +34,10 @@ export class LocationEntity {
   
     @DeleteDateColumn({ type: "timestamp" })
     deletedAt: Date;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    convertToLowerCase() {
+      this.name = this.name.toLowerCase();
+    }
 }

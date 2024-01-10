@@ -12,7 +12,12 @@ export class LocationsService {
   ) {}
 
   async create(createLocationDto: CreateLocationDto) {
-    return await this.locationsRepository.save(createLocationDto)
+    const location =  this.locationsRepository.create(createLocationDto)
+    await this.locationsRepository.save(location);
+    return {
+      id: location.id,
+      ...createLocationDto,
+    };
   }
 
   async findAll(name: string) {
@@ -27,6 +32,10 @@ export class LocationsService {
 
   async findOne(id: number) {
     return await this.locationsRepository.findOne({ where: { id } });
+  }
+
+  async findByName(name: string) {
+    return await this.locationsRepository.findOne({ where: { name } });
   }
 
   async update(id: number, updateDto: UpdateLocationDto) {
