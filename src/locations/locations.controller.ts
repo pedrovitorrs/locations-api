@@ -16,7 +16,7 @@ import { Response } from "express";
 import { LocationsService } from './locations.service';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "src/auth/auth-guard";
+import { AuthGuard } from "../auth/auth-guard";
 import { UpdateLocationDto } from "./dto/update-location.dto";
 
 @ApiTags("locations")

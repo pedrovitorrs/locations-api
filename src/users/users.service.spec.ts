@@ -1,5 +1,5 @@
 import { Test, type TestingModule } from "@nestjs/testing";
-import { databaseProviders } from "src/database.providers";
+import { databaseProviders } from "../database.providers";
 import { UserProviders } from "./users.providers";
 import { UsersService } from "./users.service";
 
