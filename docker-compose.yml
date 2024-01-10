@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+  database:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres@2022
+      - POSTGRES_DB=db_locations
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgresdata:/var/lib/postgresql/data"
+    restart: always
+    networks:
+      - backend
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2019!"
+    ports:
+      - "16543:80"
+    depends_on:
+      - database
+    networks:
+      - backend
+
+  location.services.backend:
+    image: location.services.backend
+    container_name: location.services.backend
+    build: .
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=database
+      - DATABASE_NAME=db_locations
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres@2022
+      - DATABASE_PORT=15432
+      - APP_NAME="Location API"
+      - PORT=3000
+      - JWT_SECRET='secret'
+    depends_on:
+      - database
+    ports:
+      - '3000:3000'
+    links:
+      - database
+    networks:
+      - backend
+
+networks:
+  backend:
+volumes:
+  postgresdata:
