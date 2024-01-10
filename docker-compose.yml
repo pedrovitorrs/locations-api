@@ -41,7 +41,7 @@ services:
       - DATABASE_NAME=db_locations
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres@2022
-      - DATABASE_PORT=15432
+      - DATABASE_PORT=5432
       - APP_NAME="Location API"
       - PORT=3000
       - JWT_SECRET='secret'

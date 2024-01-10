@@ -3,8 +3,6 @@ import { DataSource } from "typeorm";
 import "dotenv/config";
 import { join } from "path";
 
-const isLocal = process.env.NODE_ENV === "development";
-
 const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DATABASE_HOST,
@@ -16,14 +14,8 @@ const AppDataSource = new DataSource({
   logging: true,
   entities: [join(__dirname, "**", "*.entity.{ts,js}")],
   subscribers: [],
-  ssl: !isLocal,
-  extra: isLocal
-    ? {}
-    : {
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      },
+  ssl: false,
+  extra: {}
 });
 
 export { AppDataSource };
